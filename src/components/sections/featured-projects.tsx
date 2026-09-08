@@ -8,8 +8,8 @@ export function FeaturedProjects() {
                 Featured Projects
             </h2>
             <div className="mt-12 grid gap-8 md:grid-cols-2">
-                {projects.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                {projects.map((project, index) => (
+                    <ProjectCard key={project.id} project={project} priority={index === 0} />
                 ))}
             </div>
         </section>

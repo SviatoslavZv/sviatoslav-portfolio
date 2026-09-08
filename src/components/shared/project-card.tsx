@@ -8,9 +8,10 @@ import type { Project } from "@/types/project";
 
 interface ProjectCardProps {
     project: Project;
+    priority?: boolean;
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, priority = false }: ProjectCardProps) {
     return (
         <article className="overflow-hidden rounded-xl border border-border bg-card">
             <div className="relative aspect-video overflow-hidden bg-muted">
@@ -18,6 +19,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     src={project.imageUrl}
                     alt={`${project.title} preview`}
                     fill
+                    priority={priority}
                     className="object-cover object-top"
                     sizes="(min-width: 1024px) 50vw, 100vw"
                 />
