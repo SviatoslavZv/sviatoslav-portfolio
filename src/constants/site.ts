@@ -1,6 +1,10 @@
 export const siteConfig = {
   name: "Sviatoslav",
-  tagline: "Frontend Engineer who ships production-ready products — solo, from architecture to deployment.",
+  hero: {
+  headlinePrefix: "Frontend Engineer who ships ",
+  headlineHighlight: "production-ready",
+  headlineSuffix: " products — solo, from architecture to deployment.",
+},
   description: "Two live products in production — designed, built, and shipped end-to-end, solo.",
   availabilityStatus: "Open to opportunities",
   navLinks: [
