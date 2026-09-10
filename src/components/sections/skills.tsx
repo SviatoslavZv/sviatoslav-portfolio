@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { FadeIn } from "@/components/shared/fade-in";
 import { skillCategories } from "@/constants/skills";
 
 export function Skills() {
@@ -8,19 +9,21 @@ export function Skills() {
                 Skills &amp; Architecture
             </h2>
             <div className="mt-12 grid gap-8 sm:grid-cols-2">
-                {skillCategories.map(({ category, items }) => (
-                    <div key={category}>
-                        <h3 className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-                            {category}
-                        </h3>
-                        <div className="mt-3 flex flex-wrap gap-2">
-                            {items.map((item) => (
-                                <Badge key={item} variant="secondary">
-                                    {item}
-                                </Badge>
-                            ))}
+                {skillCategories.map(({ category, items }, index) => (
+                    <FadeIn key={category} delay={index * 0.1}>
+                        <div>
+                            <h3 className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+                                {category}
+                            </h3>
+                            <div className="mt-3 flex flex-wrap gap-2">
+                                {items.map((item) => (
+                                    <Badge key={item} variant="secondary">
+                                        {item}
+                                    </Badge>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    </FadeIn>
                 ))}
             </div>
         </section>

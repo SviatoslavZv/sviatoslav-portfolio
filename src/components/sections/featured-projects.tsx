@@ -1,5 +1,6 @@
 import { projects } from "@/constants/projects";
 import { ProjectCard } from "@/components/shared/project-card";
+import { FadeIn } from "@/components/shared/fade-in";
 
 export function FeaturedProjects() {
     return (
@@ -9,7 +10,9 @@ export function FeaturedProjects() {
             </h2>
             <div className="mt-12 grid gap-8 md:grid-cols-2">
                 {projects.map((project, index) => (
-                    <ProjectCard key={project.id} project={project} priority={index === 0} />
+                    <FadeIn key={project.id} delay={index * 0.1}>
+                        <ProjectCard project={project} priority={index === 0} />
+                    </FadeIn>
                 ))}
             </div>
         </section>

@@ -31,14 +31,14 @@ export function Hero() {
                 </p>
 
                 <div className="mt-8">
-                    <Link
+                    <a
                         href="#projects"
                         className={buttonVariants({ size: "lg", className: "shadow-md shadow-primary/20 transition-shadow hover:shadow-md hover:shadow-primary/25" })}
                     >
                         View Projects
-                    </Link>
+                    </a>
                 </div>
             </div>
-        </section>
+        </section >
     );
 }

@@ -17,20 +17,32 @@ export function Header() {
         <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
                 {/* Логотип */}
-                <Link href="/" className="font-heading text-lg font-semibold">
+                <Link
+                    href="/"
+                    onClick={(e) => {
+                        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                        if (window.location.pathname === "/") {
+                            e.preventDefault();
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                            window.history.replaceState(null, "", "/");
+                        }
+                    }}
+                    className="font-heading text-lg font-semibold"
+                >
                     {siteConfig.name}
                 </Link>
 
                 {/* Десктопная навигация — скрыта на мобильных */}
                 <nav className="hidden items-center gap-6 md:flex">
                     {siteConfig.navLinks.map((link) => (
-                        <Link
+
+                        <a
                             key={link.href}
                             href={link.href}
                             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                         >
                             {link.label}
-                        </Link>
+                        </a>
                     ))}
                     <ThemeToggle />
                 </nav>
@@ -48,13 +60,9 @@ export function Header() {
                             <SheetTitle className="sr-only">Navigation menu</SheetTitle>
                             <nav className="flex flex-col gap-4 p-6">
                                 {siteConfig.navLinks.map((link) => (
-                                    <Link
-                                        key={link.href}
-                                        href={link.href}
-                                        className="text-base font-medium"
-                                    >
+                                    <a key={link.href} href={link.href} className="text-base font-medium">
                                         {link.label}
-                                    </Link>
+                                    </a>
                                 ))}
                             </nav>
                         </SheetContent>
