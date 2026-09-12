@@ -140,3 +140,15 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.card-hover-glow {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card-hover-glow:hover {
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+}
+
+.dark .card-hover-glow:hover {
+  box-shadow: 0 0 30px rgba(126, 134, 255, 0.25);
+}

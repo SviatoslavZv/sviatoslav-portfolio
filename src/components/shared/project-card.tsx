@@ -13,8 +13,9 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, priority = false }: ProjectCardProps) {
     return (
-        <article className="group rounded-xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:bg-accent hover:shadow-[0_0_30px_rgba(0,0,0,0.15)]">
+        <article className="card-hover-glow group flex h-full flex-col rounded-xl border border-border bg-card shadow-sm hover:-translate-y-1 hover:border-primary/30 hover:bg-accent">
             <div className="relative aspect-video overflow-hidden rounded-t-xl bg-muted">
+
                 <Image
                     src={project.imageUrl}
                     alt={`${project.title} preview`}
@@ -25,7 +26,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
                 />
             </div>
 
-            <div className="p-6">
+            <div className="flex flex-1 flex-col p-6">
                 <h3 className="text-xl font-semibold">{project.title}</h3>
 
                 <div className="mt-4 space-y-3 text-sm">
@@ -51,7 +52,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
                     ))}
                 </div>
 
-                <div className="mt-6 flex gap-3">
+                <div className="mt-auto flex gap-3 pt-6">
                     <Link
                         href={project.liveUrl}
                         target="_blank"

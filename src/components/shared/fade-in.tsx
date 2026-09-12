@@ -6,13 +6,15 @@ import type { ReactNode } from "react";
 interface FadeInProps {
     children: ReactNode;
     delay?: number;
+    className?: string;
 }
 
-export function FadeIn({ children, delay = 0 }: FadeInProps) {
+export function FadeIn({ children, delay = 0, className }: FadeInProps) {
     const shouldReduceMotion = useReducedMotion();
 
     return (
         <motion.div
+            className={className}
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}

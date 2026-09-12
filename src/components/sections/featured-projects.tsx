@@ -10,7 +10,7 @@ export function FeaturedProjects() {
             </h2>
             <div className="mt-12 grid gap-8 md:grid-cols-2">
                 {projects.map((project, index) => (
-                    <FadeIn key={project.id} delay={index * 0.1}>
+                    <FadeIn key={project.id} delay={index * 0.1} className="h-full">
                         <ProjectCard project={project} priority={index === 0} />
                     </FadeIn>
                 ))}
