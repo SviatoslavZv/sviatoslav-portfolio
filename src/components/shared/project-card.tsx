@@ -13,8 +13,8 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, priority = false }: ProjectCardProps) {
     return (
-        <article className="overflow-hidden rounded-xl border border-border bg-card">
-            <div className="relative aspect-video overflow-hidden bg-muted">
+        <article className="group rounded-xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:bg-accent hover:shadow-[0_0_30px_rgba(0,0,0,0.15)]">
+            <div className="relative aspect-video overflow-hidden rounded-t-xl bg-muted">
                 <Image
                     src={project.imageUrl}
                     alt={`${project.title} preview`}
