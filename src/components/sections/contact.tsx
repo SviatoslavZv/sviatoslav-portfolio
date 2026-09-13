@@ -1,8 +1,4 @@
-import dynamic from "next/dynamic";
-
-const ContactForm = dynamic(() =>
-    import("@/components/shared/contact-form").then((mod) => mod.ContactForm)
-);
+import { ContactForm } from "@/components/shared/contact-form";
 
 export function Contact() {
     return (
