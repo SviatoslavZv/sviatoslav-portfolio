@@ -14,32 +14,41 @@ export function Footer() {
                     © {year} {siteConfig.name}. All rights reserved.
                 </p>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6">
                     <Link
-                        href={siteConfig.socials.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="GitHub profile"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
+                        href="/notes"
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                     >
-                        <BrandIcon icon={siGithub} className="h-5 w-5" />
+                        Notes
                     </Link>
-                    <Link
-                        href={siteConfig.socials.telegram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Telegram"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                        <BrandIcon icon={siTelegram} className="h-5 w-5" />
-                    </Link>
-                    <Link
-                        href={`mailto:${siteConfig.socials.email}`}
-                        aria-label="Send email"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                        <Mail className="h-5 w-5" />
-                    </Link>
+
+                    <div className="flex items-center gap-4">
+                        <Link
+                            href={siteConfig.socials.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="GitHub profile"
+                            className="text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                            <BrandIcon icon={siGithub} className="h-5 w-5" />
+                        </Link>
+                        <Link
+                            href={siteConfig.socials.telegram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Telegram"
+                            className="text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                            <BrandIcon icon={siTelegram} className="h-5 w-5" />
+                        </Link>
+                        <Link
+                            href={`mailto:${siteConfig.socials.email}`}
+                            aria-label="Send email"
+                            className="text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                            <Mail className="h-5 w-5" />
+                        </Link>
+                    </div>
                 </div>
             </div>
         </footer>

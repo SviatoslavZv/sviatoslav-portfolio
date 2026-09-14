@@ -1,0 +1,16 @@
+When I initialized shadcn/ui for this project, the CLI asked me to pick a component library: Base UI, React Aria, or Radix Primitives — with Base UI marked as "Recommended."
+
+I'd expected Radix. It's the library most shadcn tutorials and examples still reference, and it's what I was already familiar with conceptually. But the recommendation turned out to be current, not outdated advice: as of mid-2026, the shadcn/ui team switched their **default** component library from Radix to Base UI — a newer set of headless primitives built by the same team behind Radix, incorporating lessons learned from it.
+
+Radix isn't deprecated. It's still fully supported as an explicit choice. But for new projects, the team now steers people toward Base UI by default — reportedly based on their own usage data showing most new projects were already picking it before it became the default.
+
+## What actually changes in practice
+
+Very little, day to day. Both are headless primitive libraries — they handle behavior and accessibility (focus management, keyboard navigation, ARIA attributes) while leaving all visual styling to Tailwind. The API differs in a few specific places I ran into directly:
+
+- Radix's `asChild` prop for merging a primitive with a custom element becomes Base UI's `render` prop, with a slightly different calling convention.
+- Base UI's `Button` component expects a **native** `<button>` element by default (`nativeButton`), which matters if you're trying to render something like a `<Link>` styled as a button — the correct fix isn't to force it, but to use the separate `buttonVariants` helper for that case.
+
+## Why I kept the recommended default
+
+I didn't have a specific reason to prefer Radix over Base UI for this project — no dependency on a Radix-specific feature, no existing familiarity to protect. Given that, deferring to the current, actively-steered recommendation from the library's own maintainers seemed like the right call, rather than defaulting to whatever I happened to already know.
