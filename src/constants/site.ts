@@ -1,5 +1,6 @@
 export const siteConfig = {
   name: "Sviatoslav",
+  url: "https://sviatoslav-portfolio.vercel.app",
   hero: {
   headlinePrefix: "Frontend Engineer who ships ",
   headlineHighlight: "production-ready",
