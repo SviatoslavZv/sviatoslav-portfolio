@@ -1,0 +1,33 @@
+Picking an accent color for this site started as a design decision: something in the blue-violet range, distinct from the generic bright blue every second developer portfolio uses. I landed on an indigo close to Tailwind's `indigo-500` — `#6366f1` in hex, converted to `oklch(0.585 0.204 277.117)` for use as a CSS custom property.
+
+It looked good. It also failed accessibility.
+
+## Running the numbers
+
+WCAG AA requires a contrast ratio of at least 4.5:1 for normal-sized text against its background. I checked mine with `coloraide`, a Python color library, rather than eyeballing it:
+
+```
+Light mode — indigo text/link on white background: 4.47 : 1
+Light mode — white button text on indigo background: 4.22 : 1
+```
+
+Both numbers sit just under the 4.5:1 threshold. Not dramatically wrong, but wrong — and "close enough" isn't a real category in an accessibility check. A screen reader or a low-vision user doesn't experience "almost passing."
+
+## The fix wasn't the hue — it was the lightness
+
+The instinct might be to pick a completely different color. It wasn't necessary. In OKLCH, hue (the color itself), chroma (saturation), and lightness are separate, independently adjustable values. The indigo I'd chosen was correct in hue and chroma — it just needed to be a little darker to hold enough contrast against white.
+
+I ran a small script that recalculated contrast at several lightness values, from the original `0.585` down in steps:
+
+```
+L=0.585: link/bg = 4.47:1, white/link = 4.22:1
+L=0.56: link/bg = 4.98:1, white/link = 4.70:1
+```
+
+`L=0.56` was the smallest adjustment that cleared 4.5:1 on both checks, with a small margin rather than sitting right on the line. Visually, the difference between `0.585` and `0.56` is close to imperceptible — the color still reads as "the same indigo" — but the contrast math is real.
+
+Dark mode didn't need the same correction. A lighter version of the same hue (`L=0.68`) against a near-black background already cleared 6.5:1 comfortably — dark backgrounds tend to be more forgiving of saturated accent colors than white ones.
+
+## Why check this at all, instead of trusting the eye
+
+A color can look perfectly readable to someone with typical vision and still fail a formal contrast check — the two aren't the same test. Running the actual ratio, rather than deciding by feel, is the only way to know whether the color will hold up for people who rely on that margin. It's a small, mechanical check, and it's cheap to run before a color is locked into the whole site rather than after.

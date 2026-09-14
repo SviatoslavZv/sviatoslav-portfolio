@@ -7,6 +7,8 @@ import { notes } from "@/constants/notes";
 
 const noteContent: Record<string, () => Promise<{ default: ComponentType }>> = {
     "base-ui-vs-radix": () => import("@/content/notes/base-ui-vs-radix.mdx"),
+    "calibrating-accessible-accent-color": () =>
+        import("@/content/notes/calibrating-accessible-accent-color.mdx"),
 };
 
 export function generateStaticParams() {
