@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: `${siteConfig.name} — Frontend Engineer`,
   description: siteConfig.description,
+  verification: {
+    google: "e7S4ws94uz-G3OfcT-9Mwrzqe2Vikq56dSCVAkGURKw",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
