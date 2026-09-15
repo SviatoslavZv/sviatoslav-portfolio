@@ -11,8 +11,11 @@ const noteContent: Record<string, () => Promise<{ default: ComponentType }>> = {
         import("@/content/notes/calibrating-accessible-accent-color.mdx"),
     "hydration-mismatch-with-next-themes": () =>
         import("@/content/notes/hydration-mismatch-with-next-themes.mdx"),
+    "the-shadow-that-wasnt-there": () =>
+        import("@/content/notes/the-shadow-that-wasnt-there.mdx"),
+    "same-page-links-in-app-router": () =>
+        import("@/content/notes/same-page-links-in-app-router.mdx"),
 };
-
 export function generateStaticParams() {
     return notes.map((note) => ({ slug: note.slug }));
 }

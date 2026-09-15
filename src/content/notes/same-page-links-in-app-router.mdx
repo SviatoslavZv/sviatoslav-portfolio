@@ -1,0 +1,41 @@
+The header on this site has a few links that scroll to a section on the same page — Projects, Skills, Contact — plus a logo that goes back to the top. Both looked like the same kind of link. They weren't, and treating them as the same thing caused three separate rounds of debugging.
+
+## Layer one: next/link is for navigating between pages
+
+The anchor links (`href="#projects"`) were originally built with `next/link`'s `Link` component, the default choice for any link in a Next.js app. Clicking them worked, but inconsistently — sometimes the page scrolled to the right section, sometimes it did nothing at all.
+
+The tell was in the terminal running the dev server: every click, even the ones that didn't visibly do anything, logged a fresh `GET /` request. That's the actual signal. A link that's purely jumping to an anchor on the current page shouldn't need to request anything from the server — the browser can handle that natively, instantly, with zero network activity. Seeing a server round-trip on every click meant `Link` was routing through Next.js's client-side navigation logic instead of letting the browser do a plain anchor jump, and that routing layer was the source of the flakiness.
+
+Multiple open issues in the Next.js repository confirm this is a known rough edge: `Link` is built for navigating *between* distinct routes, where its prefetching and client-side transitions add real value. For a hash-only jump within the same page, that machinery isn't needed, and empirically, it isn't reliable either. The fix was to use a plain `<a href="#projects">` for these — letting the browser handle what it already handles well.
+
+## Layer two: the logo isn't a same-page link, and the linter knows it
+
+The site's own ESLint config caught the next issue immediately: applying the same `<a href="/">` treatment to the logo triggered `@next/next/no-html-link-for-pages`, with a direct message — use `Link` for navigating to `/`.
+
+This rule exists for a real reason. `/` is an actual page route, not a same-page anchor, and plain `<a>` tags to internal Next.js pages skip `Link`'s prefetching and client-side transition benefits. The earlier fix — swap `Link` for `<a>` — was correct for the anchor links, and wrong here. Same visible symptom (a link that should just work), different underlying case, different correct tool.
+
+## Layer three: making Link behave correctly is not automatic either
+
+Restoring `Link` for the logo reintroduced a version of the original problem: clicking it while already on `/` — say, after scrolling down to the Skills section, so the URL had become `/#skills` — didn't reliably scroll back to the top or clean up the hash from the URL. This matches another documented quirk: `Link`'s handling of scroll-to-top and hash removal is inconsistent specifically when navigating to a URL that differs from the current one only by a hash.
+
+The working fix, drawn from a real, recent Next.js App Router project handling the same problem, was to keep `Link` — satisfying the lint rule and preserving its routing benefits — but intercept the click and handle the same-page case manually:
+
+```
+<Link
+  href="/"
+  onClick={(e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    if (window.location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.history.replaceState(null, "", "/");
+    }
+  }}
+>
+```
+
+The modifier-key check matters as much as the scroll logic. Without it, a middle-click or Ctrl-click — the standard way to open a link in a new tab — would get silently hijacked by the custom handler instead of doing what the browser normally does. `history.replaceState`, not `pushState`, keeps the back button working the way a user expects, without an extra history entry for what is, from the user's point of view, not really a navigation at all.
+
+## The actual lesson
+
+Both `<a>` and `Link` were the "correct" choice at different points in this story, for different links on the same page, and the linter's complaint was a legitimate signal each time, not noise to silence. The mistake to avoid wasn't picking the wrong tag once — it was assuming that because two links look identical in the browser, they need the identical implementation underneath.

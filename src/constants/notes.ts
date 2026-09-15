@@ -27,4 +27,18 @@ export const notes: Note[] = [
   summary:
     "A theme toggle that looked correct broke on first paint — a classic SSR/CSR mismatch, a documented fix, and a brand-new ESLint rule that flagged the fix itself as wrong.",
 },
+{
+  slug: "the-shadow-that-wasnt-there",
+  title: "The Shadow That Wasn't There",
+  date: "2026-09-12",
+  summary:
+    "A hover glow effect that refused to appear, tangled up with two separate problems at once — a real compilation bug, and an optical illusion that looked exactly like one.",
+},
+{
+  slug: "same-page-links-in-app-router",
+  title: "Same-Page Links, Three Layers Deep",
+  date: "2026-09-13",
+  summary:
+    "A header that sometimes wouldn't scroll to the right section — and why the fix wasn't simply choosing between <a> and next/link, but knowing when to use each.",
+},
 ];

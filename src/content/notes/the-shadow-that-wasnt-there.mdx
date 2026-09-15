@@ -1,0 +1,41 @@
+I wanted a soft glow around project cards on hover — a halo shadow, not a drop shadow, with a different color in dark mode than in light mode. Tailwind's arbitrary value syntax seemed like the obvious tool:
+
+```
+hover:shadow-[0_0_30px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_30px_rgba(126,134,255,0.25)]
+```
+
+Nothing happened on hover. What followed was two separate problems, tangled together, that had to be pulled apart before either could be fixed.
+
+## Problem one: an optical illusion that looked exactly like a bug
+
+The cards have a screenshot at the top and a text area below. Hovering over the text area seemed to show a faint effect; hovering over the screenshot showed nothing at all. That's a classic case of simultaneous contrast — a bright white screenshot sitting right next to a low-opacity, blurred glow will visually swallow it, even when the glow is rendering correctly underneath. The eye reads high-contrast content next to low-contrast content as "the weak signal isn't there," even when it objectively is.
+
+For a while, this looked like the whole story: adjust the opacity, and it should even out. It didn't, because there was a second, unrelated problem happening at the same time.
+
+## Problem two: the class wasn't compiling at all
+
+Checking DevTools properly — forcing the `:hover` state, then reading the *computed* `box-shadow` on the actual card element, not a child element inside it — showed something unambiguous: the value there was the default `shadow-sm`, not the custom one. Not "too faint to see." Not present in any form.
+
+The decisive check was looking at the actual compiled CSS Tailwind sends to the browser, not the source code. Opening the generated stylesheet in the Network tab and searching its contents for the specific RGB numbers from the dark-mode shadow — `126,134,255` — returned zero matches. The class existed correctly in the component's JSX. It simply never made it into the generated CSS.
+
+That's a meaningfully different problem than "hard to see." A missing utility is a build-tool issue, not a design or contrast issue — and no amount of adjusting opacity or blur radius was ever going to fix it, because the rule producing that color didn't exist yet.
+
+## The fix: stop fighting the arbitrary-value syntax
+
+Rather than keep guessing at why this specific combination — an arbitrary `box-shadow` value, containing commas inside `rgba()`, stacked under both `dark:` and `hover:` — wasn't compiling, the more reliable move was to sidestep it: write the two rules directly in plain CSS instead of Tailwind's bracket syntax.
+
+```
+.card-hover-glow:hover {
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+}
+
+.dark .card-hover-glow:hover {
+  box-shadow: 0 0 30px rgba(126, 134, 255, 0.25);
+}
+```
+
+Plain CSS doesn't depend on Tailwind's class-name parser recognizing a particular bracket-and-comma pattern. It's either valid CSS or it isn't, and there's no intermediate compilation step that can silently drop it.
+
+## Why both problems mattered
+
+If I'd only diagnosed the contrast illusion, I would have spent time adjusting opacity values against a shadow that, on the card itself, didn't exist at all — tuning a number that had no effect, and concluding the wrong things about why. If I'd only diagnosed the compilation issue, I might have declared victory the moment the shadow reappeared, without noticing it was still nearly invisible against the screenshot. Both had to be found and fixed on their own terms — one by reading computed styles and the compiled CSS directly instead of trusting the rendered page, the other by testing directly against the specific pixels where the effect looked wrong.
