@@ -20,4 +20,11 @@ export const notes: Note[] = [
   summary:
     "Picking an indigo accent that looks right isn't enough — it also has to pass WCAG AA contrast in both themes. Here's how I checked it, and what broke when I didn't.",
 },
+{
+  slug: "hydration-mismatch-with-next-themes",
+  title: "A Hydration Mismatch, in Three Parts",
+  date: "2026-09-10",
+  summary:
+    "A theme toggle that looked correct broke on first paint — a classic SSR/CSR mismatch, a documented fix, and a brand-new ESLint rule that flagged the fix itself as wrong.",
+},
 ];

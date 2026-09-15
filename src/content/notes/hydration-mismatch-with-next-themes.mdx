@@ -1,0 +1,50 @@
+A theme toggle sounds like the simplest possible feature: a button, an icon that flips between sun and moon, a click handler. Building one with `next-themes` on Next.js surfaced three separate problems stacked on top of each other, each with a specific, correct fix.
+
+## Part one: the server doesn't know the theme
+
+The first version rendered an icon whose appearance depended on `resolvedTheme` from `next-themes`. It worked — until the browser console logged a hydration warning: the server-rendered HTML and the client's first render disagreed on an attribute.
+
+The reason is structural, not a bug in the component. `next-themes` reads the user's theme preference from `localStorage`, which only exists in the browser. During server-side rendering, there's no `localStorage` to read — the server genuinely doesn't know whether the visitor prefers dark or light. React then hydrates the client-rendered version, which *does* know the theme, and the two don't match.
+
+The documented fix is to defer rendering the theme-dependent part until after the component has mounted on the client:
+
+```
+const [mounted, setMounted] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+}, []);
+
+if (!mounted) {
+  return <NeutralPlaceholder />;
+}
+```
+
+Before mounting, the server and the client both render the same neutral placeholder — no disagreement, no warning. Once the effect runs (client-only, after hydration), the real, theme-aware version takes over.
+
+## Part two: a linter that didn't know this pattern was intentional
+
+Adding that `useEffect` triggered a different, newer problem — an ESLint error from `react-hooks/set-state-in-effect`, a fairly recent addition to the official React hooks linting rules. Its general point is sound: calling `setState` synchronously inside an effect body can cause unnecessary cascading re-renders, and it's usually a sign the effect isn't needed at all.
+
+Except here, it *is* needed — this is the one legitimate use case the rule's own reasoning doesn't cover: detecting that a component has mounted on the client, specifically to avoid a hydration mismatch. Checking the React team's own GitHub discussion confirmed this directly: this exact "isMounted" pattern is called out as a recognized, valid exception, with links to the React docs, Next.js docs, and `next-themes` itself as sources of the pattern.
+
+The right fix wasn't to restructure the component to avoid the warning — it was to silence the rule for that one line, with a comment explaining why:
+
+```
+useEffect(() => {
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- necessary to avoid hydration mismatch: theme is unknown during SSR
+  setMounted(true);
+}, []);
+```
+
+Disabling a lint rule always deserves a moment of suspicion. The difference between "the rule is wrong here" and "I'm ignoring a real problem" is whether there's a documented reason, not just a feeling that it's probably fine.
+
+## Part three: the comment on the wrong line
+
+The first attempt at that fix still failed. `eslint-disable-next-line` does exactly what its name says — it disables the rule for the *next* line only. I'd placed the comment above the `useEffect(() => {` wrapper, one line above the actual `setState` call it needed to cover. The rule kept firing, because the line it was actually attached to — `setMounted(true);` — still had no exemption.
+
+Moving the comment to sit directly above `setMounted(true)`, inside the effect body, fixed it. A small, easy mistake, and a good reminder that these directives are line-scoped, not block-scoped — proximity to the problem isn't the same as covering it.
+
+## What this added up to
+
+None of these three problems were hard individually. What made the sequence worth writing down is that each fix revealed the next problem, and each one required actually reading what the tooling was telling me — the hydration warning, the lint rule's rationale, the exact semantics of a disable comment — rather than pattern-matching to "add mounted check" and assuming that was the whole story.
