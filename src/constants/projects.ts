@@ -29,6 +29,7 @@ export const projects: Project[] = [
       "100% accessibility score on Lighthouse across all audited pages, with active affiliate partnerships through CJ Affiliate and Rakuten Advertising. The project is young with modest traffic so far — the focus here is on engineering quality and architecture, not scale.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS v4", "Supabase", "Vercel"],
     liveUrl: "https://www.couponcreek.com",
+    githubUrl: "https://github.com/SviatoslavZv/coupon-stream-app",
     imageUrl: "/images/projects/couponcreek-cover.webp",
     featured: true,
   },
