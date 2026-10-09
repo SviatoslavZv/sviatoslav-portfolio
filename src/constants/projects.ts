@@ -33,4 +33,20 @@ export const projects: Project[] = [
     imageUrl: "/images/projects/couponcreek-cover.webp",
     featured: true,
   },
+    {
+    id: "skilltrack",
+    slug: "skilltrack",
+    title: "SkillTrack",
+    problem:
+      "Learning web development means drowning in search results — outdated tutorials, paywalls, and no clear order to follow, so beginners spend hours searching instead of learning.",
+    solution:
+      "A free, hand-picked learning-path aggregator built with Next.js 16, React 19, and TypeScript. All content lives in Storyblok (headless CMS) behind a single typed data layer, so tracks can be added or edited without touching code. Pages are statically generated with ISR, and a revalidation webhook — verified with an HMAC signature — publishes CMS edits without a redeploy. Each lesson shows its author, resource type, and duration, and per-lesson progress is saved in the browser with Zustand and localStorage, so there is no sign-up. Per-page SEO metadata, Open Graph images, a sitemap, and an accessible mobile menu round it out.",
+    result:
+      "Live with 12 tracks and 50 hand-picked lessons — about 101 hours of free material across Frontend and Backend directions — scoring 100 on desktop and 97 on mobile in Lighthouse (lab data), with 100 accessibility on both. Accounts and cross-device sync are deliberately left out: the product stays free, instant, and sign-up-free.",
+    stack: ["Next.js 16", "TypeScript", "Tailwind CSS v4", "Storyblok", "Zustand", "Vercel"],
+    liveUrl: "https://skilltrack-dev.vercel.app",
+    githubUrl: "https://github.com/SviatoslavZv/skilltrack-app",
+    imageUrl: "/images/projects/skilltrack-cover.webp",
+    featured: true,
+  },
 ];
