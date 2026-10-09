@@ -27,7 +27,7 @@ export function Hero() {
                 </h1>
 
                 <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-                    {siteConfig.description}
+                    {siteConfig.hero.subheadline}
                 </p>
 
                 <div className="mt-8">
