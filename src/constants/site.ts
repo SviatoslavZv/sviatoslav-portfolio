@@ -6,7 +6,7 @@ export const siteConfig = {
   headlineHighlight: "production-ready",
   headlineSuffix: " products — solo, from architecture to deployment.",
 },
-  description: "Two live products in production — designed, built, and shipped end-to-end, solo.",
+  description: "Live products in production — designed, built, and shipped end-to-end, solo.",
   availabilityStatus: "Open to opportunities",
   navLinks: [
   { label: "Projects", href: "/#projects" },
