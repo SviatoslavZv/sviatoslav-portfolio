@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/constants/site";
@@ -30,12 +29,18 @@ export function Hero() {
                     {siteConfig.hero.subheadline}
                 </p>
 
-                <div className="mt-8">
-                    <a
-                        href="#projects"
-                        className={buttonVariants({ size: "lg", className: "shadow-md shadow-primary/20 transition-shadow hover:shadow-md hover:shadow-primary/25" })}
-                    >
+                <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
+                    <a href="#projects" className={buttonVariants({ size: "lg", className: "shadow-md shadow-primary/20 transition-shadow hover:shadow-md hover:shadow-primary/25" })}>
                         View Projects
+                    </a>
+                    <a
+                        href="/Sviatoslav_Zvonyk_Resume.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={buttonVariants({ variant: "outline", size: "lg" })}
+                    >
+                        Resume (PDF)
+                        <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                 </div>
             </div>
